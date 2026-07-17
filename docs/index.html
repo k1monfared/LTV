@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Listener LTV Explorer</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --panel: #171d2b;
+    --panel-2: #1e2636;
+    --ink: #e7ecf4;
+    --muted: #9aa7bd;
+    --line: #2a3346;
+    --nn: #4f9cf0;
+    --heur: #e0902f;
+    --accent: #6bbf59;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  header {
+    padding: 28px 24px 18px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #141a28, #0f1420);
+  }
+  header h1 { margin: 0 0 6px; font-size: 22px; letter-spacing: 0.2px; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; max-width: 820px; }
+  .wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 860px) { .wrap { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h2 { margin: 0 0 14px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .control { margin-bottom: 16px; }
+  .control label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+  .control label .val { color: var(--nn); font-variant-numeric: tabular-nums; font-weight: 600; }
+  input[type=range] { width: 100%; accent-color: var(--nn); }
+  select {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--panel-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .result { text-align: center; padding: 8px 0 4px; }
+  .result .big {
+    font-size: 46px; font-weight: 700; color: var(--nn);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.5px;
+  }
+  .result .lab { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  .bars { margin-top: 20px; }
+  .bar-row { margin-bottom: 12px; }
+  .bar-row .top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .track { height: 12px; background: var(--panel-2); border-radius: 6px; overflow: hidden; }
+  .fill { height: 100%; border-radius: 6px; transition: width 0.15s ease; }
+  .fill.nn { background: var(--nn); }
+  .fill.heur { background: var(--heur); }
+  .note { color: var(--muted); font-size: 12.5px; margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+  .pill { display:inline-block; background: var(--panel-2); border:1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; color: var(--muted); margin-right: 6px; }
+  a { color: var(--nn); }
+  .disclaimer { max-width: 1060px; margin: 16px auto 0; padding: 10px 20px; border-left: 3px solid var(--nn); background: var(--panel); color: var(--ink); font-size: 14px; font-weight: 700; }
+  footer { text-align:center; color: var(--muted); font-size: 12.5px; padding: 10px 24px 40px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Listener Lifetime Value Explorer</h1>
+  <p>
+    Set a subscriber profile and see the lifetime value predicted by the trained JAX
+    neural network, running entirely in your browser as a re-implemented forward pass.
+    The dashed heuristic bar is the simple margin-times-tenure rule the network replaced.
+  </p>
+</header>
+
+<div class="disclaimer">This is built on synthetic data.</div>
+
+<div class="wrap">
+  <section class="card">
+    <h2>Subscriber profile</h2>
+
+    <div class="grid2">
+      <div class="control">
+        <label>Plan tier <span class="val" id="v_plan_tier"></span></label>
+        <select id="plan_tier"></select>
+      </div>
+      <div class="control">
+        <label>Acquisition channel <span class="val" id="v_acquisition_channel"></span></label>
+        <select id="acquisition_channel"></select>
+      </div>
+    </div>
+
+    <div class="control">
+      <label>Region <span class="val" id="v_region"></span></label>
+      <select id="region"></select>
+    </div>
+
+    <div class="control">
+      <label>Tenure so far (months) <span class="val" id="v_tenure_months">12</span></label>
+      <input type="range" id="tenure_months" min="0.5" max="72" step="0.5" value="12" />
+    </div>
+    <div class="control">
+      <label>Average daily listening (minutes) <span class="val" id="v_avg_daily_minutes">40</span></label>
+      <input type="range" id="avg_daily_minutes" min="1" max="240" step="1" value="40" />
+    </div>
+    <div class="grid2">
+      <div class="control">
+        <label>Active days / month <span class="val" id="v_active_days_per_month">16</span></label>
+        <input type="range" id="active_days_per_month" min="0.5" max="30" step="0.5" value="16" />
+      </div>
+      <div class="control">
+        <label>Playlists created <span class="val" id="v_playlists_created">4</span></label>
+        <input type="range" id="playlists_created" min="0" max="40" step="1" value="4" />
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="control">
+        <label>Skip rate <span class="val" id="v_skip_rate">0.45</span></label>
+        <input type="range" id="skip_rate" min="0.02" max="0.95" step="0.01" value="0.45" />
+      </div>
+      <div class="control">
+        <label>Discount rate <span class="val" id="v_discount_rate">0.10</span></label>
+        <input type="range" id="discount_rate" min="0" max="0.6" step="0.01" value="0.10" />
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Predicted lifetime value</h2>
+    <div class="result">
+      <div class="big" id="ltv_value">$0</div>
+      <div class="lab">JAX neural network estimate</div>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row">
+        <div class="top"><span>Neural network</span><span class="val" id="bar_nn_val" style="color:var(--nn)">$0</span></div>
+        <div class="track"><div class="fill nn" id="bar_nn" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="top"><span>Margin x tenure heuristic</span><span class="val" id="bar_heur_val" style="color:var(--heur)">$0</span></div>
+        <div class="track"><div class="fill heur" id="bar_heur" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="note">
+      The network predicts a 24-month, present-value discounted LTV. Bars are scaled to a
+      $100 reference. The heuristic multiplies monthly margin by an unbounded average
+      tenure with no horizon or discounting, so it overshoots for high-retention tiers.
+      On held-out subscribers the network reaches R2 = 0.996 against the defined target
+      versus a negative R2 for this naive rule.
+    </div>
+  </section>
+</div>
+
+<footer>
+  Model weights loaded from <code>model_weights.js</code>.<br />
+  <a href="https://github.com/k1monfared/LTV">Source code on GitHub</a>
+</footer>
+
+<script src="model_weights.js"></script>
+<script>
+(function () {
+  var M = window.LTV_MODEL;
+  if (!M) { document.getElementById("ltv_value").textContent = "model not loaded"; return; }
+
+  var NUM = M.numeric_features;
+  var CAT = M.categorical_features;
+  var REF = 100; // reference LTV for bar scaling, USD
+
+  // Populate dropdowns.
+  function fillSelect(id) {
+    var sel = document.getElementById(id);
+    CAT[id].forEach(function (lvl) {
+      var o = document.createElement("option");
+      o.value = lvl; o.textContent = lvl;
+      sel.appendChild(o);
+    });
+  }
+  ["plan_tier", "acquisition_channel", "region"].forEach(fillSelect);
+  document.getElementById("plan_tier").value = "Standard";
+  document.getElementById("acquisition_channel").value = "organic";
+  document.getElementById("region").value = "NA";
+
+  function relu(x) { return x > 0 ? x : 0; }
+
+  // Dense forward: y[j] = sum_i x[i]*W[i][j] + b[j].
+  function dense(x, layer) {
+    var W = layer.W, b = layer.b;
+    var out = new Array(b.length).fill(0);
+    for (var i = 0; i < x.length; i++) {
+      var row = W[i], xi = x[i];
+      if (xi === 0) continue;
+      for (var j = 0; j < row.length; j++) out[j] += xi * row[j];
+    }
+    for (var j2 = 0; j2 < b.length; j2++) out[j2] += b[j2];
+    return out;
+  }
+
+  function buildInput() {
+    var vec = [];
+    // Standardized numeric block, in schema order.
+    for (var i = 0; i < NUM.length; i++) {
+      var raw = parseFloat(document.getElementById(NUM[i]).value);
+      vec.push((raw - M.numeric_mean[i]) / M.numeric_std[i]);
+    }
+    // One-hot categorical blocks, in schema order.
+    ["plan_tier", "acquisition_channel", "region"].forEach(function (field) {
+      var chosen = document.getElementById(field).value;
+      CAT[field].forEach(function (lvl) { vec.push(lvl === chosen ? 1 : 0); });
+    });
+    return vec;
+  }
+
+  function predictNN() {
+    var x = buildInput();
+    var h = x;
+    for (var l = 0; l < M.layers.length; l++) {
+      h = dense(h, M.layers[l]);
+      if (l < M.layers.length - 1) h = h.map(relu);
+    }
+    var z = h[0];
+    var logy = z * M.target.std + M.target.mean;
+    return Math.expm1(logy); // inverse of log1p target transform
+  }
+
+  function predictHeuristic() {
+    var tier = document.getElementById("plan_tier").value;
+    var months = M.tier_expected_months[tier];
+    // Reconstruct monthly margin the same way the generator does.
+    var basePrice = { Student: 5.99, Standard: 10.99, Premium: 14.99, Family: 19.99 }[tier];
+    var priceFactor = { NA: 1.0, EU: 0.95, LATAM: 0.7, APAC: 0.8, Other: 0.75 }[document.getElementById("region").value];
+    var discount = parseFloat(document.getElementById("discount_rate").value);
+    var margin = basePrice * (1 - discount) * 0.30 * priceFactor;
+    return margin * months;
+  }
+
+  function money(x) {
+    return "$" + Math.max(0, x).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+
+  function refresh() {
+    // Sync slider readouts.
+    NUM.forEach(function (id) {
+      var el = document.getElementById(id);
+      var v = parseFloat(el.value);
+      document.getElementById("v_" + id).textContent =
+        (id === "skip_rate" || id === "discount_rate") ? v.toFixed(2) : v;
+    });
+    ["plan_tier", "acquisition_channel", "region"].forEach(function (id) {
+      document.getElementById("v_" + id).textContent = document.getElementById(id).value;
+    });
+
+    var nn = predictNN();
+    var heur = predictHeuristic();
+    document.getElementById("ltv_value").textContent = money(nn);
+    document.getElementById("bar_nn_val").textContent = money(nn);
+    document.getElementById("bar_heur_val").textContent = money(heur);
+    document.getElementById("bar_nn").style.width = Math.min(100, 100 * nn / REF) + "%";
+    document.getElementById("bar_heur").style.width = Math.min(100, 100 * heur / REF) + "%";
+  }
+
+  var ids = NUM.concat(["plan_tier", "acquisition_channel", "region"]);
+  ids.forEach(function (id) {
+    document.getElementById(id).addEventListener("input", refresh);
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>

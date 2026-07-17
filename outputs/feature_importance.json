@@ -1,0 +1,198 @@
+{
+  "permutation": {
+    "metric": "mae_vs_true_ltv_usd",
+    "base_mae": 0.93085543161162,
+    "n_repeats": 20,
+    "features": [
+      {
+        "feature": "plan_tier",
+        "label": "Plan tier",
+        "mae_increase_mean": 11.375854524189833,
+        "mae_increase_std": 0.12555295538989947
+      },
+      {
+        "feature": "discount_rate",
+        "label": "Discount rate",
+        "mae_increase_mean": 6.762664419966519,
+        "mae_increase_std": 0.06490140214919325
+      },
+      {
+        "feature": "avg_daily_minutes",
+        "label": "Avg daily minutes",
+        "mae_increase_mean": 5.551369286506018,
+        "mae_increase_std": 0.056512753800587116
+      },
+      {
+        "feature": "region",
+        "label": "Region",
+        "mae_increase_mean": 4.690409557059111,
+        "mae_increase_std": 0.0638377507713134
+      },
+      {
+        "feature": "acquisition_channel",
+        "label": "Acquisition channel",
+        "mae_increase_mean": 3.6622884068147052,
+        "mae_increase_std": 0.05149786279001325
+      },
+      {
+        "feature": "skip_rate",
+        "label": "Skip rate",
+        "mae_increase_mean": 3.142600807108148,
+        "mae_increase_std": 0.03333504334497216
+      },
+      {
+        "feature": "active_days_per_month",
+        "label": "Active days / month",
+        "mae_increase_mean": 2.4199384643401496,
+        "mae_increase_std": 0.03210049991667737
+      },
+      {
+        "feature": "tenure_months",
+        "label": "Tenure (months)",
+        "mae_increase_mean": 2.127740953758637,
+        "mae_increase_std": 0.03313278806242827
+      },
+      {
+        "feature": "playlists_created",
+        "label": "Playlists created",
+        "mae_increase_mean": 1.0426352688141196,
+        "mae_increase_std": 0.01912569687308818
+      }
+    ]
+  },
+  "shap": {
+    "n_background": 100,
+    "n_explain": 400,
+    "max_evals": 1000,
+    "base_value": 29.452511023712724,
+    "raw": [
+      {
+        "feature": "plan_tier",
+        "label": "Plan tier",
+        "mean_abs_shap": 9.612504832731476
+      },
+      {
+        "feature": "discount_rate",
+        "label": "Discount rate",
+        "mean_abs_shap": 6.117206323649218
+      },
+      {
+        "feature": "avg_daily_minutes",
+        "label": "Avg daily minutes",
+        "mean_abs_shap": 5.093263667117007
+      },
+      {
+        "feature": "region",
+        "label": "Region",
+        "mean_abs_shap": 4.63066820329105
+      },
+      {
+        "feature": "acquisition_channel",
+        "label": "Acquisition channel",
+        "mean_abs_shap": 3.8716955643084208
+      },
+      {
+        "feature": "skip_rate",
+        "label": "Skip rate",
+        "mean_abs_shap": 2.9826619379580768
+      },
+      {
+        "feature": "active_days_per_month",
+        "label": "Active days / month",
+        "mean_abs_shap": 2.45894159889961
+      },
+      {
+        "feature": "tenure_months",
+        "label": "Tenure (months)",
+        "mean_abs_shap": 2.257873700453757
+      },
+      {
+        "feature": "playlists_created",
+        "label": "Playlists created",
+        "mean_abs_shap": 1.3240200914119662
+      }
+    ],
+    "encoded": [
+      {
+        "name": "tenure_months",
+        "mean_abs_shap": 2.257873700453757
+      },
+      {
+        "name": "avg_daily_minutes",
+        "mean_abs_shap": 5.093263667117004
+      },
+      {
+        "name": "active_days_per_month",
+        "mean_abs_shap": 2.4589415988996093
+      },
+      {
+        "name": "skip_rate",
+        "mean_abs_shap": 2.982661937958078
+      },
+      {
+        "name": "playlists_created",
+        "mean_abs_shap": 1.3240200914119666
+      },
+      {
+        "name": "discount_rate",
+        "mean_abs_shap": 6.117206323649218
+      },
+      {
+        "name": "plan_tier=Student",
+        "mean_abs_shap": 4.129034689273736
+      },
+      {
+        "name": "plan_tier=Standard",
+        "mean_abs_shap": 2.6886431066243195
+      },
+      {
+        "name": "plan_tier=Premium",
+        "mean_abs_shap": 3.2381535470262537
+      },
+      {
+        "name": "plan_tier=Family",
+        "mean_abs_shap": 4.8251300297425255
+      },
+      {
+        "name": "acquisition_channel=organic",
+        "mean_abs_shap": 3.1840420910193785
+      },
+      {
+        "name": "acquisition_channel=paid_social",
+        "mean_abs_shap": 0.9663800461787615
+      },
+      {
+        "name": "acquisition_channel=referral",
+        "mean_abs_shap": 1.3235145185447823
+      },
+      {
+        "name": "acquisition_channel=label_partner",
+        "mean_abs_shap": 2.8441404719050225
+      },
+      {
+        "name": "acquisition_channel=playlist_placement",
+        "mean_abs_shap": 0.3181117482292937
+      },
+      {
+        "name": "region=NA",
+        "mean_abs_shap": 4.04705609513078
+      },
+      {
+        "name": "region=EU",
+        "mean_abs_shap": 2.07814717556088
+      },
+      {
+        "name": "region=LATAM",
+        "mean_abs_shap": 1.3184640255999898
+      },
+      {
+        "name": "region=APAC",
+        "mean_abs_shap": 0.26225366933038846
+      },
+      {
+        "name": "region=Other",
+        "mean_abs_shap": 0.507510687683212
+      }
+    ]
+  }
+}

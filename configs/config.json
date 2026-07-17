@@ -1,0 +1,32 @@
+{
+  "seed": 20260702,
+  "data": {
+    "n_subscribers": 46000,
+    "test_fraction": 0.2,
+    "noise_sigma": 0.15,
+    "horizon_months": 24,
+    "observation_window_months": 3,
+    "annual_discount_rate": 0.10,
+    "max_cohort_age_months": 48
+  },
+  "model": {
+    "hidden_sizes": [64, 32],
+    "activation": "relu"
+  },
+  "train": {
+    "epochs": 60,
+    "batch_size": 512,
+    "learning_rate": 0.003,
+    "weight_decay": 0.0001
+  },
+  "multiseed": {
+    "n_seeds": 10
+  },
+  "paths": {
+    "data_csv": "data/subscribers.csv",
+    "metrics_json": "outputs/metrics.json",
+    "metrics_report": "outputs/metrics_report.md",
+    "weights_json": "outputs/model_weights.json",
+    "images_dir": "docs/images"
+  }
+}

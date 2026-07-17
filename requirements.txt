@@ -1,0 +1,10 @@
+# Listener LTV estimation with a JAX neural network
+# Pinned to the versions used for the committed sample run (CPU only).
+jax[cpu]==0.10.2
+flax==0.12.7
+optax==0.2.8
+numpy<2.1
+pandas>=2.0
+scikit-learn>=1.3
+matplotlib>=3.7
+shap>=0.44

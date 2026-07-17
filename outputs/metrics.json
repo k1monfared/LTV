@@ -1,0 +1,178 @@
+{
+  "n_test": 4793,
+  "n_train": 19174,
+  "train_seconds": 2.967,
+  "final_train_loss": 0.021746,
+  "models": {
+    "nn": {
+      "mae": 3.3279742298309523,
+      "rmse": 5.702221980366517,
+      "mape": 12.767971650885146,
+      "r2_observed": 0.9450299299907573,
+      "r2_true_ltv": 0.9959084665790419,
+      "spearman_true_ltv": 0.9988791666040323
+    },
+    "gbm": {
+      "mae": 3.454523631124128,
+      "rmse": 5.8647841756674985,
+      "mape": 13.518538899331025,
+      "r2_observed": 0.9418510175012746,
+      "r2_true_ltv": 0.9939448857969558,
+      "spearman_true_ltv": 0.9979349164904457
+    },
+    "ridge": {
+      "mae": 4.707323414745465,
+      "rmse": 9.93124335100882,
+      "mape": 17.20835516274759,
+      "r2_observed": 0.8332578880432971,
+      "r2_true_ltv": 0.8724137956403991,
+      "spearman_true_ltv": 0.9923093816389384
+    },
+    "heuristic": {
+      "mae": 31.82786660310317,
+      "rmse": 46.160133807838655,
+      "mape": 169.19247417058597,
+      "r2_observed": -2.602236052881635,
+      "r2_true_ltv": -2.84819998980188,
+      "spearman_true_ltv": 0.8160903853634853
+    }
+  },
+  "decile_gains_nn": [
+    {
+      "decile": 1,
+      "count": 480,
+      "mean_actual_ltv": 80.34847041666666,
+      "lift": 3.0603135706635523,
+      "cum_capture_pct": 30.647830459388793
+    },
+    {
+      "decile": 2,
+      "count": 480,
+      "mean_actual_ltv": 50.565970208333326,
+      "lift": 1.9259573211518421,
+      "cum_capture_pct": 49.9355315683578
+    },
+    {
+      "decile": 3,
+      "count": 480,
+      "mean_actual_ltv": 37.438574583333335,
+      "lift": 1.4259609083971876,
+      "cum_capture_pct": 64.21596628629334
+    },
+    {
+      "decile": 4,
+      "count": 479,
+      "mean_actual_ltv": 28.317667640918575,
+      "lift": 1.0785636879164187,
+      "cum_capture_pct": 74.99485229739211
+    },
+    {
+      "decile": 5,
+      "count": 479,
+      "mean_actual_ltv": 21.19470605427975,
+      "lift": 0.8072642357443418,
+      "cum_capture_pct": 83.06244188473907
+    },
+    {
+      "decile": 6,
+      "count": 479,
+      "mean_actual_ltv": 16.019413569937367,
+      "lift": 0.6101476292942853,
+      "cum_capture_pct": 89.16009918563545
+    },
+    {
+      "decile": 7,
+      "count": 479,
+      "mean_actual_ltv": 11.708126096033403,
+      "lift": 0.4459392567515359,
+      "cum_capture_pct": 93.61670056230946
+    },
+    {
+      "decile": 8,
+      "count": 479,
+      "mean_actual_ltv": 8.361967849686847,
+      "lift": 0.3184907385933361,
+      "cum_capture_pct": 96.79961447397665
+    },
+    {
+      "decile": 9,
+      "count": 479,
+      "mean_actual_ltv": 5.453897286012526,
+      "lift": 0.20772810970558458,
+      "cum_capture_pct": 98.87559537422649
+    },
+    {
+      "decile": 10,
+      "count": 479,
+      "mean_actual_ltv": 2.953970981210856,
+      "lift": 0.11251088457896433,
+      "cum_capture_pct": 100.0
+    }
+  ],
+  "calibration_nn": [
+    {
+      "mean_predicted": 3.000714321307407,
+      "mean_actual": 2.95589375,
+      "count": 480
+    },
+    {
+      "mean_predicted": 5.394721107247723,
+      "mean_actual": 5.463658124999999,
+      "count": 480
+    },
+    {
+      "mean_predicted": 8.125462243346993,
+      "mean_actual": 8.377051458333334,
+      "count": 480
+    },
+    {
+      "mean_predicted": 11.434747654614647,
+      "mean_actual": 11.72134655532359,
+      "count": 479
+    },
+    {
+      "mean_predicted": 15.532069959607737,
+      "mean_actual": 16.056353235908144,
+      "count": 479
+    },
+    {
+      "mean_predicted": 20.65304529397608,
+      "mean_actual": 21.259134029227553,
+      "count": 479
+    },
+    {
+      "mean_predicted": 27.458216805636972,
+      "mean_actual": 28.32463152400835,
+      "count": 479
+    },
+    {
+      "mean_predicted": 36.233601561229875,
+      "mean_actual": 37.4756853862213,
+      "count": 479
+    },
+    {
+      "mean_predicted": 49.69745862994078,
+      "mean_actual": 50.6741617954071,
+      "count": 479
+    },
+    {
+      "mean_predicted": 78.64466289511955,
+      "mean_actual": 80.37125052192066,
+      "count": 479
+    }
+  ],
+  "ground_truth": {
+    "horizon_months": 24,
+    "annual_discount_rate": 0.1,
+    "observation_window_months": 3,
+    "pool_size": 46000,
+    "matured_count": 23967,
+    "matured_fraction": 0.521,
+    "mean_defined_target": 26.29,
+    "mean_naive_realized": 21.73,
+    "naive_bias_pct": -17.3,
+    "observed_churned_fraction": 0.7308,
+    "mean_defined_churned_only": 19.43,
+    "selection_bias_pct": -26.1
+  }
+}
